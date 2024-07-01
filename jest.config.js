@@ -9,4 +9,6 @@ module.exports = {
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/../test/jest-setup.ts'],
+  transformIgnorePatterns: ['<rootDir>/node_modules/'],
 };
+

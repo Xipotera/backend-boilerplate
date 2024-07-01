@@ -6,7 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    "target": "es6",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -22,4 +22,5 @@
   "include": ["src/**/*.ts", "test/**/*.ts"],
   "exclude": ["node_modules"]
 }
+
 
