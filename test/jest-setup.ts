@@ -21,8 +21,8 @@ beforeAll(async () => {
 afterAll(async () => {
   // Drop the database after tests
   if (dataSource) {
-    await dataSource.dropDatabase();
-    await dataSource.destroy();
+    //await dataSource.dropDatabase();
+    //await dataSource.destroy();
   }
   await app.close();
 });

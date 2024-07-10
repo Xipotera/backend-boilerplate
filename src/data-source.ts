@@ -1,7 +1,8 @@
 import { DataSource } from 'typeorm';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { Global, Module, Logger } from '@nestjs/common';
-import { User } from './user/user.entity';
+import { User } from './users/user.entity';
+import { join } from 'path';
 
 const createDataSource = async (
   configService: ConfigService,
@@ -16,7 +17,8 @@ const createDataSource = async (
       password: configService.get<string>('DATABASE_PASSWORD'),
       database: configService.get<string>('DATABASE_NAME'),
       entities: [User],
-      synchronize: true,
+      migrations: [join(__dirname, 'migrations/*.{ts,js}')],
+      synchronize: false,
     });
     await dataSource.initialize();
     logger.log('Database connected successfully');
