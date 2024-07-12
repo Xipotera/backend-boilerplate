@@ -1,7 +1,8 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import * as request from 'supertest';
-import { CucumberWorldHelper } from '../../test/helpers/cucumberWorld.helper';
+import { CucumberWorldHelper } from '../helpers/cucumberWorld.helper';
 import should = require('should');
+import { verifyResponse } from '../helpers/verifyResponse';
 
 Given(
   'I have valid login credentials',
@@ -31,7 +32,7 @@ When(
       .post('/graphql')
       .send({
         query: `
-        mutation Authenticate($loginUserInput: LoginUserDto!) {
+        mutation Authenticate($loginUserInput: LoginUserInputDto!) {
           authenticate(loginUserInput: $loginUserInput) {
             access_token
             refresh_token
@@ -66,13 +67,14 @@ Then(
 );
 
 Then(
-  'I should receive an success message',
+  'I should receive a success message',
   function (this: CucumberWorldHelper) {
-    should(this.response).have.property('body');
     const authenticateData = this.response.body.data.authenticate;
+    verifyResponse.call(this, 'authenticate', '200');
     should(authenticateData).have.property('access_token').which.is.a.String();
     should(authenticateData).have.property('refresh_token').which.is.a.String();
     should(authenticateData).have.property('status').which.is.a.Number();
-    authenticateData.status.should.equal(200);
+
+    this.accessToken = authenticateData.access_token;
   },
 );

@@ -6,7 +6,6 @@ export async function createDatabaseIfNotExists(dataSource: DataSource) {
   await queryRunner.connect();
 
   const databaseName = dataSource.options.database;
-  console.log(`Database ${databaseName} `);
   const dbExists = await queryRunner.hasDatabase(databaseName as string);
 
   if (!dbExists) {

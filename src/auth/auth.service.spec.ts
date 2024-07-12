@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { User } from '../users/user.entity';
-import { LoginUserDto } from '../users/dto/login-user.dto';
+import { LoginUserInputDto } from '../users/dto/login-user.input.dto';
 import { IAuthPayload } from './dto/auth-payload-dto';
 import { ApolloError } from 'apollo-server-express';
 import * as bcrypt from 'bcryptjs';
@@ -121,7 +121,7 @@ describe('AuthService', () => {
         refresh_token: 'refreshToken',
       });
 
-      const dto: LoginUserDto = { email, password };
+      const dto: LoginUserInputDto = { email, password };
       const result = await authService.login(dto);
 
       expect(result).toEqual({
@@ -134,7 +134,7 @@ describe('AuthService', () => {
     });
 
     it('should throw an ApolloError if credentials are invalid', async () => {
-      const dto: LoginUserDto = {
+      const dto: LoginUserInputDto = {
         email: faker.internet.email(),
         password: faker.internet.password(),
       };
@@ -165,7 +165,7 @@ describe('AuthService', () => {
       };
 
       jest.spyOn(authService, 'validateUser').mockResolvedValue(user);
-      const dto: LoginUserDto = { email, password };
+      const dto: LoginUserInputDto = { email, password };
 
       await expect(authService.login(dto)).rejects.toThrow(ApolloError);
       await expect(authService.login(dto)).rejects.toHaveProperty(
@@ -191,7 +191,7 @@ describe('AuthService', () => {
       };
 
       jest.spyOn(authService, 'validateUser').mockResolvedValue(user);
-      const dto: LoginUserDto = { email, password };
+      const dto: LoginUserInputDto = { email, password };
 
       await expect(authService.login(dto)).rejects.toThrow(ApolloError);
       await expect(authService.login(dto)).rejects.toHaveProperty(

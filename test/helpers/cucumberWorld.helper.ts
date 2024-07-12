@@ -14,6 +14,7 @@ interface CustomWorld extends CucumberWorld {
     email: string;
     password: string;
   };
+  accessToken: string;
 }
 
 class CucumberWorldHelper extends CucumberWorld implements CustomWorld {
@@ -26,11 +27,13 @@ class CucumberWorldHelper extends CucumberWorld implements CustomWorld {
     email: string;
     password: string;
   };
+  accessToken: string;
 
   constructor(options: IWorldOptions) {
     super(options);
     this.response = {};
     this.emailToken = '';
+    this.accessToken = '';
   }
 }
 

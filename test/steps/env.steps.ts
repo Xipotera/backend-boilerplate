@@ -20,5 +20,4 @@ Then('I should receive the NODE_ENV value', () => {
   if (!nodeEnv) {
     throw new Error('Expected NODE_ENV in the response');
   }
-  console.log(`NODE_ENV: ${nodeEnv}`);
 });

@@ -1,7 +1,8 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import * as request from 'supertest';
-import { CucumberWorldHelper } from '../../test/helpers/cucumberWorld.helper'; // Correct import for `should`
+import { CucumberWorldHelper } from '../helpers/cucumberWorld.helper'; // Correct import for `should`
 import should = require('should');
+import { verifyResponse } from '../helpers/verifyResponse';
 
 Given('I have a valid user data', function (this: CucumberWorldHelper) {
   this.validUserData = {
@@ -23,6 +24,7 @@ When(
         mutation Register($createUserInput: CreateUserDto!) {
           register(createUserInput: $createUserInput) {
             id
+            token
             message
             status
           }
@@ -37,17 +39,23 @@ When(
 );
 
 Then(
-  'I should receive a confirmation with the user ID',
-  function (this: CucumberWorldHelper) {
-    this.response.status.should.equal(200);
-    should(this.response).have.property('body');
-    const registerData = this.response.body.data.register;
-    should(registerData).have.property('id').which.is.a.String();
-    should(registerData).have.property('status').which.is.a.Number();
-    registerData.status.should.equal(201);
-    should(registerData.id).not.be.null();
-    should(registerData.id).not.be.undefined();
-    this.emailToken = registerData?.token;
+  'I should receive user from query {string} with status {string}',
+  function (
+    this: CucumberWorldHelper,
+    operation: string,
+    expectedStatus: string,
+  ) {
+    const UserData = this.response.body.data[operation];
+    verifyResponse.call(this, operation, expectedStatus);
+
+    if (operation === 'register') {
+      should(UserData).have.property('id').which.is.a.String();
+      should(UserData.id).not.be.null();
+      should(UserData.id).not.be.undefined();
+      if (UserData?.token) {
+        this.emailToken = UserData?.token;
+      }
+    }
   },
 );
 
@@ -67,8 +75,8 @@ When(
       .post('/graphql')
       .send({
         query: `
-        mutation VerifyEmail($token: String!) {
-          verifyEmail(token: $token) {
+        mutation VerifyEmailToken($token: String!) {
+          verifyEmailToken(token: $token) {
             message
             status
           } 

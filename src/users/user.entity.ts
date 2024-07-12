@@ -1,23 +1,11 @@
 import { Exclude } from 'class-transformer';
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import * as bcrypt from 'bcryptjs';
+import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { BaseEntity } from '../global/entitiy/BaseEntity';
 
 @ObjectType()
 @Entity('users')
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  @Field(() => ID)
-  public id: string;
-
+export class User extends BaseEntity {
   @Column({
     type: 'text',
     unique: true,
@@ -52,14 +40,6 @@ export class User {
   @Column({ type: 'boolean', default: true })
   @Field(() => Boolean)
   public isActive = true;
-
-  @CreateDateColumn({ type: 'timestamp with time zone' })
-  @Field({ nullable: true })
-  public createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamp with time zone' })
-  @Field({ nullable: true })
-  public updatedAt: Date;
 
   @BeforeInsert()
   @BeforeUpdate()

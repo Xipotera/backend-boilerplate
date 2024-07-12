@@ -1,3 +1,5 @@
 export interface IAuthPayload {
-  id: string;
+  sub: {
+    id: string;
+  };
 }

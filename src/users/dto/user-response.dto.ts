@@ -2,10 +2,13 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { GraphqlResponse } from '../../global/graphql-response.dto';
 
 @ObjectType()
-export class LoginResponse extends GraphqlResponse {
+export class UserResponse extends GraphqlResponse {
   @Field()
-  access_token: string;
+  id: string;
 
   @Field()
-  refresh_token: string;
+  firstname: string;
+
+  @Field()
+  lastname: string;
 }

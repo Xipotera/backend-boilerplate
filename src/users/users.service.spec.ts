@@ -64,7 +64,6 @@ describe('UsersService', () => {
 
     // Remove the password property for comparison
     delete user.password;
-    delete result.password;
 
     // Assert that the result matches the mock user
     expect(result).toEqual(user);
